@@ -96,6 +96,34 @@ In MetaMask → **Import tokens** → paste your token address. Your 1,000,000 M
 
 ---
 
+---
+
+## Bonus: deploy an NFT (ERC-721) 🖼️
+
+Same flow, a different contract — `src/MyNFT.sol` is a self-contained NFT collection. Deploy it with a
+name, symbol and a metadata base URI (`tokenURI(id)` = baseURI + id):
+
+```bash
+source .env
+forge create src/MyNFT.sol:MyNFT \
+  --rpc-url zcore \
+  --private-key $PRIVATE_KEY \
+  --broadcast \
+  --constructor-args "My ZCore NFT" "MZN" "https://my-nft.example/metadata/"
+```
+
+Then **mint** your first NFT (only the deployer/owner can mint; token IDs start at 0):
+
+```bash
+cast send <your-nft-address> "mint(address)" <your-wallet-address> \
+  --rpc-url zcore --private-key $PRIVATE_KEY
+```
+
+Check it on `https://testnet.zcore.network/token/<your-nft-address>` — you'll see the collection and
+token #0 owned by your wallet. That's it — you just minted an NFT on ZCore. 🎉
+
+---
+
 ## Alternative: scripted deploy
 
 Prefer a repeatable Foundry script? Install forge-std, create `script/Deploy.s.sol`, and run it:
